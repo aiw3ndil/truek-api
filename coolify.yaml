@@ -1,0 +1,72 @@
+# Coolify Configuration File
+# This file helps Coolify understand how to deploy your application
+
+name: truek-api
+description: Truek API - Backend for free object exchange platform
+
+# Build configuration
+build:
+  type: dockerfile
+  dockerfile: ./Dockerfile
+  context: .
+
+# Runtime configuration
+runtime:
+  port: 3000
+  health_check:
+    path: /up
+    interval: 30s
+    timeout: 5s
+    retries: 3
+    start_period: 40s
+
+# Environment variables (set these in Coolify UI)
+environment:
+  RAILS_ENV: production
+  RACK_ENV: production
+  PORT: 3000
+  RAILS_LOG_TO_STDOUT: "true"
+  RAILS_SERVE_STATIC_FILES: "true"
+  # Add these in Coolify UI:
+  # - SECRET_KEY_BASE
+  # - DATABASE_URL
+  # - GOOGLE_CLIENT_ID
+
+# Resources
+resources:
+  limits:
+    memory: 1024M
+    cpu: "1.0"
+  reservations:
+    memory: 512M
+    cpu: "0.5"
+
+# Domains
+domains:
+  - api.truek.xyz
+
+# SSL/TLS
+ssl:
+  enabled: true
+  provider: letsencrypt
+  force_https: true
+
+# Restart policy
+restart_policy:
+  condition: unless-stopped
+  max_attempts: 3
+
+# Deployment strategy
+deployment:
+  strategy: rolling
+  max_surge: 1
+  max_unavailable: 0
+
+# Post-deployment commands (optional)
+# post_deploy:
+#   - rails db:migrate
+
+# Volumes (if needed)
+# volumes:
+#   - ./log:/rails/log
+#   - ./storage:/rails/storage
