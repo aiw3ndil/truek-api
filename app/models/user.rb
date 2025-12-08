@@ -1,5 +1,9 @@
 class User < ApplicationRecord
   has_secure_password validations: false
+  
+  has_many :items, dependent: :destroy
+  has_many :proposed_trades, class_name: 'Trade', foreign_key: 'proposer_id', dependent: :destroy
+  has_many :received_trades, class_name: 'Trade', foreign_key: 'receiver_id', dependent: :destroy
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :name, presence: true

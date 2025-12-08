@@ -15,6 +15,12 @@ Rails.application.routes.draw do
       # User routes
       get 'users/me', to: 'users#me'
       put 'users/me', to: 'users#update'
+      
+      # Items routes
+      resources :items, only: [:index, :show, :create, :update, :destroy]
+      
+      # Trades routes
+      resources :trades, only: [:index, :show, :create, :update]
     end
   end
 end
