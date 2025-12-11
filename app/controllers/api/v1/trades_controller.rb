@@ -106,11 +106,13 @@ class Api::V1::TradesController < ApplicationController
       status: trade.status,
       proposer: {
         id: trade.proposer.id,
-        name: trade.proposer.name
+        name: trade.proposer.name,
+        picture: trade.proposer.picture
       },
       receiver: {
         id: trade.receiver.id,
-        name: trade.receiver.name
+        name: trade.receiver.name,
+        picture: trade.receiver.picture
       },
       proposer_item: {
         id: trade.proposer_item.id,
@@ -132,12 +134,14 @@ class Api::V1::TradesController < ApplicationController
       proposer: {
         id: trade.proposer.id,
         name: trade.proposer.name,
-        email: trade.proposer.email
+        email: trade.proposer.email,
+        picture: trade.proposer.picture
       },
       receiver: {
         id: trade.receiver.id,
         name: trade.receiver.name,
-        email: trade.receiver.email
+        email: trade.receiver.email,
+        picture: trade.receiver.picture
       },
       proposer_item: {
         id: trade.proposer_item.id,

@@ -7,6 +7,7 @@ class Api::V1::UsersController < ApplicationController
       id: current_user.id,
       name: current_user.name,
       email: current_user.email,
+      picture: current_user.picture,
       created_at: current_user.created_at
     }, status: :ok
   end
@@ -18,6 +19,7 @@ class Api::V1::UsersController < ApplicationController
         id: current_user.id,
         name: current_user.name,
         email: current_user.email,
+        picture: current_user.picture,
         updated_at: current_user.updated_at
       }, status: :ok
     else
@@ -28,7 +30,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_update_params
-    params.permit(:name, :email, :password, :password_confirmation)
+    params.permit(:name, :email, :password, :password_confirmation, :picture)
   end
 end
 

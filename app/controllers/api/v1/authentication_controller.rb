@@ -40,6 +40,7 @@ class Api::V1::AuthenticationController < ApplicationController
       id: user.id,
       name: user.name,
       email: user.email,
+      picture: user.picture,
       created_at: user.created_at
     }
   end
