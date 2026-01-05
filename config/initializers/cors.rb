@@ -22,12 +22,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   # Development configuration
   if Rails.env.development? || Rails.env.test?
     allow do
-      origins 'http://localhost:3000', 
-              'http://localhost:5173',  # Vite default
-              'http://localhost:4173',  # Vite preview
-              'http://127.0.0.1:3000',
-              'http://127.0.0.1:5173',
-              'http://127.0.0.1:4173'
+      origins 'http://localhost:3000',
+              'http://192.168.0.102:3000'
 
       resource '*',
         headers: :any,
