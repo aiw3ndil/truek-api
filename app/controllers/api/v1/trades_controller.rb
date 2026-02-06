@@ -107,12 +107,12 @@ class Api::V1::TradesController < ApplicationController
       proposer: {
         id: trade.proposer.id,
         name: trade.proposer.name,
-        picture: trade.proposer.picture
+        picture: trade.proposer.picture.attached? ? rails_blob_url(trade.proposer.picture) : nil
       },
       receiver: {
         id: trade.receiver.id,
         name: trade.receiver.name,
-        picture: trade.receiver.picture
+        picture: trade.receiver.picture.attached? ? rails_blob_url(trade.receiver.picture) : nil
       },
       proposer_item: {
         id: trade.proposer_item.id,
@@ -135,13 +135,13 @@ class Api::V1::TradesController < ApplicationController
         id: trade.proposer.id,
         name: trade.proposer.name,
         email: trade.proposer.email,
-        picture: trade.proposer.picture
+        picture: trade.proposer.picture.attached? ? rails_blob_url(trade.proposer.picture) : nil
       },
       receiver: {
         id: trade.receiver.id,
         name: trade.receiver.name,
         email: trade.receiver.email,
-        picture: trade.receiver.picture
+        picture: trade.receiver.picture.attached? ? rails_blob_url(trade.receiver.picture) : nil
       },
       proposer_item: {
         id: trade.proposer_item.id,

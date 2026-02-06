@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password validations: false
   
+  has_one_attached :picture
+  
   has_many :items, dependent: :destroy
   has_many :proposed_trades, class_name: 'Trade', foreign_key: 'proposer_id', dependent: :destroy
   has_many :received_trades, class_name: 'Trade', foreign_key: 'receiver_id', dependent: :destroy
@@ -21,22 +23,35 @@ class User < ApplicationRecord
       user.assign_attributes(
         google_id: google_data[:sub],
         name: google_data[:name],
-        picture: google_data[:picture],
         provider: 'google'
       )
       user.save(validate: false)
+      user.attach_picture_from_url(google_data[:picture]) if google_data[:picture].present?
     elsif user.google_id.nil?
       user.update_columns(
         google_id: google_data[:sub],
-        picture: google_data[:picture],
         provider: 'google'
       )
+      user.attach_picture_from_url(google_data[:picture]) if google_data[:picture].present?
     end
     
     user
   end
 
   private
+
+  def attach_picture_from_url(picture_url)
+    return unless picture_url.present?
+    
+    begin
+      require 'open-uri'
+      file = URI.open(picture_url)
+      filename = File.basename(URI.parse(picture_url).path).presence || "picture.jpg"
+      picture.attach(io: file, filename: filename)
+    rescue => e
+      Rails.logger.error("Failed to attach picture for user #{id}: #{e.message}")
+    end
+  end
 
   def downcase_email
     self.email = email.downcase

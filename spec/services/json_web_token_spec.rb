@@ -6,8 +6,8 @@ RSpec.describe JsonWebToken do
       payload = { user_id: 1 }
       token = JsonWebToken.encode(payload)
       
-      expect(token).to be_present
-      expect(token).to be_a(String)
+      decoded = JsonWebToken.decode(token)
+      expect(decoded[:exp]).to be_within(1.minute.to_i).of(2.weeks.from_now.to_i)
     end
 
     it 'encodes a payload with custom expiration' do

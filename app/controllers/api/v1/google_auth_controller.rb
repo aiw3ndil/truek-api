@@ -40,7 +40,7 @@ class Api::V1::GoogleAuthController < ApplicationController
       id: user.id,
       name: user.name,
       email: user.email,
-      picture: user.picture,
+      picture: user.picture.attached? ? rails_blob_url(user.picture) : nil,
       provider: user.provider,
       created_at: user.created_at
     }

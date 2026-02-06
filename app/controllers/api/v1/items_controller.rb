@@ -79,7 +79,7 @@ class Api::V1::ItemsController < ApplicationController
       user: {
         id: item.user.id,
         name: item.user.name,
-        picture: item.user.picture
+        picture: item.user.picture.attached? ? rails_blob_url(item.user.picture) : nil
       },
       images: item.item_images.map { |img| { id: img.id, url: img.image_url, position: img.position } },
       created_at: item.created_at,
