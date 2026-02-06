@@ -6,7 +6,8 @@ RSpec.describe ItemImage, type: :model do
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:image_url) }
+    it { should have_one_attached(:file) }
+    it { should validate_presence_of(:file) }
     it { should validate_numericality_of(:position).only_integer.is_greater_than_or_equal_to(0) }
   end
 

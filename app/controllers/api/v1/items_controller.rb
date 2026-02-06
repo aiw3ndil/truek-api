@@ -7,7 +7,7 @@ class Api::V1::ItemsController < ApplicationController
 
   # GET /api/v1/items
   def index
-    items = Item.includes(:user, :item_images).available.recent
+    items = Item.includes(:user, item_images: { file_attachment: :blob }).available.recent
     items = items.by_user(params[:user_id]) if params[:user_id].present?
     
     render json: items.map { |item| item_response(item) }, status: :ok
@@ -50,7 +50,7 @@ class Api::V1::ItemsController < ApplicationController
   private
 
   def set_item
-    @item = Item.includes(:user, :item_images).find(params[:id])
+    @item = Item.includes(:user, item_images: { file_attachment: :blob }).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Item not found' }, status: :not_found
   end
@@ -66,7 +66,7 @@ class Api::V1::ItemsController < ApplicationController
       :title, 
       :description, 
       :status,
-      item_images_attributes: [:id, :image_url, :position, :_destroy]
+      item_images_attributes: [:id, :file, :position, :_destroy]
     )
   end
 
@@ -81,7 +81,7 @@ class Api::V1::ItemsController < ApplicationController
         name: item.user.name,
         picture: item.user.picture.attached? ? rails_blob_url(item.user.picture) : nil
       },
-      images: item.item_images.map { |img| { id: img.id, url: img.image_url, position: img.position } },
+      images: item.item_images.map { |img| { id: img.id, url: img.file.attached? ? rails_blob_url(img.file) : nil, position: img.position } },
       created_at: item.created_at,
       updated_at: item.updated_at
     }

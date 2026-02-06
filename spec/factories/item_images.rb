@@ -1,7 +1,14 @@
 FactoryBot.define do
   factory :item_image do
     association :item
-    image_url { Faker::LoremFlickr.image(size: "300x300", search_terms: ['product']) }
+    after(:build) do |item_image|
+      item_image.file.attach(
+        io: File.open(Rails.root.join('spec/fixtures/files/image.jpg')),
+        filename: 'image.jpg',
+        content_type: 'image/jpeg'
+      )
+    end
+    
     sequence(:position) { |n| n }
   end
 end

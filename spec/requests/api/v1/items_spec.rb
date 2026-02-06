@@ -45,13 +45,14 @@ RSpec.describe "Api::V1::Items", type: :request do
 
   describe "POST /api/v1/items" do
     context "with valid parameters" do
+      let(:image) { fixture_file_upload(Rails.root.join('spec/fixtures/files/image.jpg'), 'image/jpeg') }
       let(:valid_params) do
         {
           item: {
             title: "Test Item",
             description: "Test Description",
             item_images_attributes: [
-              { image_url: "https://example.com/image.jpg", position: 0 }
+              { file: image, position: 0 }
             ]
           }
         }
