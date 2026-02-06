@@ -13,6 +13,7 @@ class Item < ApplicationRecord
   scope :available, -> { where(status: 'available') }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :recent, -> { order(created_at: :desc) }
+  scope :search_by_title, ->(query) { where('LOWER(title) LIKE ?', "%#{query.downcase}%") }
   
   def traded?
     status == 'traded'

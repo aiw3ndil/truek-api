@@ -16,6 +16,8 @@ class User < ApplicationRecord
 
   before_save :downcase_email
 
+  scope :search_by_name, ->(query) { where('LOWER(name) LIKE ?', "%#{query.downcase}%") }
+
   def self.from_google(google_data)
     user = find_or_initialize_by(email: google_data[:email].downcase)
     

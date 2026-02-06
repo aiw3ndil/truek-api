@@ -23,6 +23,15 @@ RSpec.describe "Api::V1::Items", type: :request do
       json_response = JSON.parse(response.body)
       expect(json_response.length).to eq(3)
     end
+
+    it "filters items by title query" do
+      create(:item, title: "Special Item", user: user)
+      get "/api/v1/items", params: { query: "special" }
+      expect(response).to have_http_status(:ok)
+      json_response = JSON.parse(response.body)
+      expect(json_response.length).to eq(1)
+      expect(json_response.first['title']).to eq("Special Item")
+    end
   end
 
   describe "GET /api/v1/items/:id" do

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post 'auth/google', to: 'google_auth#authenticate'
       
       # User routes
+      resources :users, only: [:index]
       get 'users/me', to: 'users#me'
       put 'users/me', to: 'users#update'
       

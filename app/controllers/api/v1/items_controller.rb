@@ -8,6 +8,7 @@ class Api::V1::ItemsController < ApplicationController
   # GET /api/v1/items
   def index
     items = Item.includes(:user, item_images: { file_attachment: :blob }).available.recent
+    items = items.search_by_title(params[:query]) if params[:query].present?
     items = items.by_user(params[:user_id]) if params[:user_id].present?
     
     render json: items.map { |item| item_response(item) }, status: :ok
