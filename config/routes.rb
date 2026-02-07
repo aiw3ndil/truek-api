@@ -24,6 +24,12 @@ Rails.application.routes.draw do
       resources :trades, only: [:index, :show, :create, :update] do
         resources :messages, only: [:index, :create]
       end
+
+      resources :notifications, only: [:index, :update, :destroy] do
+        collection do
+          post :mark_all_as_read
+        end
+      end
     end
   end
 end

@@ -16,9 +16,12 @@ class Trade < ApplicationRecord
   scope :for_user, ->(user_id) { where('proposer_id = ? OR receiver_id = ?', user_id, user_id) }
   scope :recent, -> { order(created_at: :desc) }
   
-  after_update :update_items_status, if: :saved_change_to_status?
+  after_create_commit :notify_receiver_of_suggestion
+  after_update_commit :update_items_status, if: :saved_change_to_status?
+  after_update_commit :notify_participants_of_status_change, if: :saved_change_to_status?
   
   def accept!
+
     update(status: 'accepted')
   end
   
@@ -63,6 +66,57 @@ class Trade < ApplicationRecord
     elsif status_before_last_save == 'accepted' && %w[cancelled rejected].include?(status)
       proposer_item.update(status: 'available')
       receiver_item.update(status: 'available')
+    end
+  end
+
+  def notify_receiver_of_suggestion
+    Notification.create(
+      user: receiver,
+      title: "Nueva propuesta de trueque",
+      message: "#{proposer.name} quiere cambiar su #{proposer_item.title} por tu #{receiver_item.title}.",
+      link: "/trades",
+      notification_type: "trade_requested"
+    )
+  end
+
+  def notify_participants_of_status_change
+    case status
+    when 'accepted'
+      Notification.create(
+        user: proposer,
+        title: "¡Trueque aceptado!",
+        message: "#{receiver.name} ha aceptado tu propuesta de trueque.",
+        link: "/trades",
+        notification_type: "trade_accepted"
+      )
+    when 'rejected'
+      Notification.create(
+        user: proposer,
+        title: "Propuesta rechazada",
+        message: "#{receiver.name} ha rechazado tu propuesta de trueque.",
+        link: "/trades",
+        notification_type: "trade_rejected"
+      )
+    when 'cancelled'
+      other_user = (Current.user&.id == proposer.id) ? receiver : proposer
+      Notification.create(
+        user: other_user,
+        title: "Trueque cancelado",
+        message: "El trueque ha sido cancelado por #{Current.user&.name || 'el otro usuario'}.",
+        link: "/trades",
+        notification_type: "trade_cancelled"
+      )
+    when 'completed'
+      # Notify both
+      [proposer, receiver].each do |user|
+        Notification.create(
+          user: user,
+          title: "Trueque completado",
+          message: "¡Enhorabuena! El trueque se ha completado con éxito.",
+          link: "/trades",
+          notification_type: "trade_completed"
+        )
+      end
     end
   end
 end
