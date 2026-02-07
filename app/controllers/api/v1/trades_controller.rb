@@ -5,7 +5,9 @@ class Api::V1::TradesController < ApplicationController
 
   # GET /api/v1/trades
   def index
-    trades = Trade.includes(:proposer, :receiver, :proposer_item, :receiver_item)
+    trades = Trade.includes(:proposer, :receiver, 
+                          proposer_item: { item_images: { file_attachment: :blob } }, 
+                          receiver_item: { item_images: { file_attachment: :blob } })
                   .for_user(current_user.id)
                   .recent
     
@@ -116,11 +118,13 @@ class Api::V1::TradesController < ApplicationController
       },
       proposer_item: {
         id: trade.proposer_item.id,
-        title: trade.proposer_item.title
+        title: trade.proposer_item.title,
+        images: trade.proposer_item.item_images.map { |img| { url: img.file.attached? ? rails_blob_url(img.file) : nil, position: img.position } }
       },
       receiver_item: {
         id: trade.receiver_item.id,
-        title: trade.receiver_item.title
+        title: trade.receiver_item.title,
+        images: trade.receiver_item.item_images.map { |img| { url: img.file.attached? ? rails_blob_url(img.file) : nil, position: img.position } }
       },
       created_at: trade.created_at,
       updated_at: trade.updated_at
