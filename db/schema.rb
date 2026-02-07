@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_07_074739) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_07_101947) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -106,6 +106,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_07_074739) do
     t.datetime "updated_at", null: false
     t.string "google_id"
     t.string "provider", default: "email"
+    t.string "language", default: "en"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["google_id"], name: "index_users_on_google_id", unique: true
   end
