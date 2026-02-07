@@ -32,13 +32,14 @@ class Api::V1::UsersController < ApplicationController
       id: user.id,
       name: user.name,
       email: user.email,
+      language: user.language,
       picture: user.picture.attached? ? rails_blob_url(user.picture) : nil,
       created_at: user.created_at
     }
   end
 
   def user_update_params
-    params.permit(:name, :email, :password, :password_confirmation, :picture)
+    params.permit(:name, :email, :password, :password_confirmation, :picture, :language)
   end
 end
 
