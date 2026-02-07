@@ -41,7 +41,7 @@ class Api::V1::TradesController < ApplicationController
     case action
     when 'accept'
       if @trade.receiver_id == current_user.id && @trade.status == 'pending'
-        if @trade.accept!
+        if @trade.accept!(current_user)
           render json: trade_detail_response(@trade), status: :ok
         else
           render json: { errors: @trade.errors.full_messages }, status: :unprocessable_entity
@@ -51,7 +51,7 @@ class Api::V1::TradesController < ApplicationController
       end
     when 'reject'
       if @trade.receiver_id == current_user.id && @trade.status == 'pending'
-        if @trade.reject!
+        if @trade.reject!(current_user)
           render json: trade_detail_response(@trade), status: :ok
         else
           render json: { errors: @trade.errors.full_messages }, status: :unprocessable_entity
@@ -61,7 +61,7 @@ class Api::V1::TradesController < ApplicationController
       end
     when 'cancel'
       if @trade.proposer_id == current_user.id && @trade.status == 'pending'
-        if @trade.cancel!
+        if @trade.cancel!(current_user)
           render json: trade_detail_response(@trade), status: :ok
         else
           render json: { errors: @trade.errors.full_messages }, status: :unprocessable_entity
@@ -71,7 +71,7 @@ class Api::V1::TradesController < ApplicationController
       end
     when 'complete'
       if @trade.status == 'accepted'
-        if @trade.complete!
+        if @trade.complete!(current_user)
           render json: trade_detail_response(@trade), status: :ok
         else
           render json: { errors: @trade.errors.full_messages }, status: :unprocessable_entity

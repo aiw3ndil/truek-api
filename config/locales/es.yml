@@ -1,0 +1,22 @@
+es:
+  hello: "Hola mundo"
+  notifications:
+    trade_requested:
+      title: "Nueva propuesta de trueque"
+      message: "%{proposer_name} quiere cambiar su %{proposer_item_title} por tu %{receiver_item_title}."
+    trade_accepted:
+      title: "¡Trueque aceptado!"
+      message: "%{receiver_name} ha aceptado tu propuesta de trueque."
+      message_receiver: "Has aceptado la propuesta de trueque. Ya puedes chatear con el otro usuario."
+    trade_rejected:
+      title: "Propuesta rechazada"
+      message: "%{receiver_name} ha rechazado tu propuesta de trueque."
+    trade_cancelled:
+      title: "Trueque cancelado"
+      message: "El trueque ha sido cancelado por %{initiator_name}."
+    trade_completed:
+      title: "Trueque completado"
+      message: "¡Enhorabuena! El trueque se ha completado con éxito."
+    new_message:
+      title: "Nuevo mensaje"
+      message: "Has recibido un mensaje de %{sender_name} sobre vuestro trueque."

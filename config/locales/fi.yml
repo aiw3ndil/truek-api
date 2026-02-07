@@ -1,0 +1,22 @@
+fi:
+  hello: "Hei maailma"
+  notifications:
+    trade_requested:
+      title: "Uusi vaihtotarjous"
+      message: "%{proposer_name} haluaa vaihtaa tuotteensa %{proposer_item_title} sinun tuotteeseesi %{receiver_item_title}."
+    trade_accepted:
+      title: "Vaihtotarjous hyväksytty!"
+      message: "%{receiver_name} on hyväksynyt vaihtotarjouksesi."
+      message_receiver: "Olet hyväksynyt vaihtotarjouksen. Voit nyt keskustella toisen käyttäjän kanssa."
+    trade_rejected:
+      title: "Vaihtotarjous hylätty"
+      message: "%{receiver_name} on hylännyt vaihtotarjouksesi."
+    trade_cancelled:
+      title: "Vaihtotarjous peruutettu"
+      message: "Vaihtotarjous on peruutettu käyttäjän %{initiator_name} toimesta."
+    trade_completed:
+      title: "Vaihtotarjous suoritettu"
+      message: "Onneksi olkoon! Vaihtotarjous on suoritettu onnistuneesti."
+    new_message:
+      title: "Uusi viesti"
+      message: "Olet saanut viestin käyttäjältä %{sender_name} koskien vaihtotarjoustasi."

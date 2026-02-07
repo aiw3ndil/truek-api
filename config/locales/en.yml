@@ -29,3 +29,23 @@
 
 en:
   hello: "Hello world"
+  notifications:
+    trade_requested:
+      title: "New trade proposal"
+      message: "%{proposer_name} wants to trade their %{proposer_item_title} for your %{receiver_item_title}."
+    trade_accepted:
+      title: "Trade accepted!"
+      message: "%{receiver_name} has accepted your trade proposal."
+      message_receiver: "You have accepted the trade proposal. You can now chat with the other user."
+    trade_rejected:
+      title: "Trade rejected"
+      message: "%{receiver_name} has rejected your trade proposal."
+    trade_cancelled:
+      title: "Trade cancelled"
+      message: "The trade has been cancelled by %{initiator_name}."
+    trade_completed:
+      title: "Trade completed"
+      message: "Congratulations! The trade has been completed successfully."
+    new_message:
+      title: "New message"
+      message: "You have received a message from %{sender_name} about your trade."

@@ -19,26 +19,29 @@ class Trade < ApplicationRecord
   after_create_commit :notify_receiver_of_suggestion
   after_update_commit :update_items_status, if: :saved_change_to_status?
   after_update_commit :notify_participants_of_status_change, if: :saved_change_to_status?
-  
-  def accept!
 
+  def accept!(initiator)
     update(status: 'accepted')
+    notify_participants_of_status_change(initiator)
   end
   
-  def reject!
+  def reject!(initiator)
     update(status: 'rejected')
+    notify_participants_of_status_change(initiator)
   end
   
-  def cancel!
+  def cancel!(initiator)
     update(status: 'cancelled')
+    notify_participants_of_status_change(initiator)
   end
   
-  def complete!
+  def complete!(initiator)
     transaction do
       update!(status: 'completed')
       proposer_item.update!(status: 'traded')
       receiver_item.update!(status: 'traded')
     end
+    notify_participants_of_status_change(initiator)
   end
   
   private
@@ -61,8 +64,6 @@ class Trade < ApplicationRecord
     if status == 'completed'
       proposer_item.update(status: 'traded')
       receiver_item.update(status: 'traded')
-    elsif status == 'accepted' && status_before_last_save == 'pending'
-      messages.create(user: receiver, content: "Intercambio aceptado. ¡Ya podéis hablar!")
     elsif status_before_last_save == 'accepted' && %w[cancelled rejected].include?(status)
       proposer_item.update(status: 'available')
       receiver_item.update(status: 'available')
@@ -70,52 +71,73 @@ class Trade < ApplicationRecord
   end
 
   def notify_receiver_of_suggestion
-    Notification.create(
-      user: receiver,
-      title: "Nueva propuesta de trueque",
-      message: "#{proposer.name} quiere cambiar su #{proposer_item.title} por tu #{receiver_item.title}.",
-      link: "/trades",
-      notification_type: "trade_requested"
-    )
+    I18n.with_locale(receiver.language) do
+      Notification.create(
+        user: receiver,
+        title: I18n.t('notifications.trade_requested.title'),
+        message: I18n.t('notifications.trade_requested.message', proposer_name: proposer.name, proposer_item_title: proposer_item.title, receiver_item_title: receiver_item.title),
+        link: "/trades",
+        notification_type: "trade_requested"
+      )
+    end
   end
 
-  def notify_participants_of_status_change
+  def notify_participants_of_status_change(initiator)
     case status
     when 'accepted'
-      Notification.create(
-        user: proposer,
-        title: "¡Trueque aceptado!",
-        message: "#{receiver.name} ha aceptado tu propuesta de trueque.",
-        link: "/trades",
-        notification_type: "trade_accepted"
-      )
+      # Notify proposer
+      I18n.with_locale(proposer.language) do
+        Notification.create(
+          user: proposer,
+          title: I18n.t('notifications.trade_accepted.title'),
+          message: I18n.t('notifications.trade_accepted.message', receiver_name: receiver.name),
+          link: "/trades",
+          notification_type: "trade_accepted"
+        )
+      end
+      # Notify receiver
+      I18n.with_locale(receiver.language) do
+        Notification.create(
+          user: receiver,
+          title: I18n.t('notifications.trade_accepted.title'),
+          message: I18n.t('notifications.trade_accepted.message_receiver'),
+          link: "/trades",
+          notification_type: "trade_accepted"
+        )
+      end
     when 'rejected'
-      Notification.create(
-        user: proposer,
-        title: "Propuesta rechazada",
-        message: "#{receiver.name} ha rechazado tu propuesta de trueque.",
-        link: "/trades",
-        notification_type: "trade_rejected"
-      )
+      I18n.with_locale(proposer.language) do
+        Notification.create(
+          user: proposer,
+          title: I18n.t('notifications.trade_rejected.title'),
+          message: I18n.t('notifications.trade_rejected.message', receiver_name: receiver.name),
+          link: "/trades",
+          notification_type: "trade_rejected"
+        )
+      end
     when 'cancelled'
-      other_user = (Current.user&.id == proposer.id) ? receiver : proposer
-      Notification.create(
-        user: other_user,
-        title: "Trueque cancelado",
-        message: "El trueque ha sido cancelado por #{Current.user&.name || 'el otro usuario'}.",
-        link: "/trades",
-        notification_type: "trade_cancelled"
-      )
+      other_user = (initiator.id == proposer.id) ? receiver : proposer
+      I18n.with_locale(other_user.language) do
+        Notification.create(
+          user: other_user,
+          title: I18n.t('notifications.trade_cancelled.title'),
+          message: I18n.t('notifications.trade_cancelled.message', initiator_name: initiator.name),
+          link: "/trades",
+          notification_type: "trade_cancelled"
+        )
+      end
     when 'completed'
       # Notify both
       [proposer, receiver].each do |user|
-        Notification.create(
-          user: user,
-          title: "Trueque completado",
-          message: "¡Enhorabuena! El trueque se ha completado con éxito.",
-          link: "/trades",
-          notification_type: "trade_completed"
-        )
+        I18n.with_locale(user.language) do
+          Notification.create(
+            user: user,
+            title: I18n.t('notifications.trade_completed.title'),
+            message: I18n.t('notifications.trade_completed.message'),
+            link: "/trades",
+            notification_type: "trade_completed"
+          )
+        end
       end
     end
   end
