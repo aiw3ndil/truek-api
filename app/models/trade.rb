@@ -4,6 +4,8 @@ class Trade < ApplicationRecord
   belongs_to :receiver, class_name: 'User'
   belongs_to :receiver_item, class_name: 'Item'
   
+  has_many :messages, dependent: :destroy
+  
   validates :status, presence: true, inclusion: { in: %w[pending accepted rejected cancelled completed] }
   validate :users_must_be_different
   validate :items_must_be_available, on: :create
@@ -56,6 +58,8 @@ class Trade < ApplicationRecord
     if status == 'completed'
       proposer_item.update(status: 'traded')
       receiver_item.update(status: 'traded')
+    elsif status == 'accepted' && status_before_last_save == 'pending'
+      messages.create(user: proposer, content: "Intercambio aceptado. ¡Ya podéis hablar!")
     elsif status_before_last_save == 'accepted' && %w[cancelled rejected].include?(status)
       proposer_item.update(status: 'available')
       receiver_item.update(status: 'available')

@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :trade do
-    association :proposer, factory: :user
-    association :receiver, factory: :user
-    association :proposer_item, factory: :item
-    association :receiver_item, factory: :item
+    proposer { association :user }
+    receiver { association :user }
+    proposer_item { association :item, user: proposer }
+    receiver_item { association :item, user: receiver }
     status { 'pending' }
 
     trait :accepted do

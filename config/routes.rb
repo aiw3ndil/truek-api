@@ -21,7 +21,9 @@ Rails.application.routes.draw do
       resources :items, only: [:index, :show, :create, :update, :destroy]
       
       # Trades routes
-      resources :trades, only: [:index, :show, :create, :update]
+      resources :trades, only: [:index, :show, :create, :update] do
+        resources :messages, only: [:index, :create]
+      end
     end
   end
 end

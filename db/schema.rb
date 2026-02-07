@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_06_134423) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_07_071044) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -60,6 +60,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_06_134423) do
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.integer "trade_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trade_id"], name: "index_messages_on_trade_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "trades", force: :cascade do |t|
     t.integer "proposer_id", null: false
     t.integer "proposer_item_id", null: false
@@ -92,6 +102,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_06_134423) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "item_images", "items"
   add_foreign_key "items", "users"
+  add_foreign_key "messages", "trades"
+  add_foreign_key "messages", "users"
   add_foreign_key "trades", "items", column: "proposer_item_id"
   add_foreign_key "trades", "items", column: "receiver_item_id"
   add_foreign_key "trades", "users", column: "proposer_id"
