@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <h1><%= @notification.title %></h1>
-    <p>
-      <%= @notification.message %>
-    </p>
-    <p>
-      To view the notification, please visit: <%= link_to 'View Notification', @notification.link %>
-    </p>
-    <p>Thanks for using our application!</p>
-  </body>
-</html>
+<h1><%= @notification.title %></h1>
+<p>
+  <%= @notification.message %>
+</p>
+<p>
+  <%= link_to I18n.t('notification_mailer.new_notification_email.view_notification'), @full_link_url, class: 'button' %>
+</p>
+<p><%= I18n.t('notification_mailer.new_notification_email.thanks') %></p>
+

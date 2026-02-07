@@ -20,3 +20,15 @@ fi:
     new_message:
       title: "Uusi viesti"
       message: "Olet saanut viestin käyttäjältä %{sender_name} koskien vaihtotarjoustasi."
+  user_mailer:
+    welcome_email:
+      subject: "Tervetuloa Truekiin!"
+      greeting: "Hei %{name},"
+      body_html: "Kiitos, että liityit Truekiin. Olemme innoissamme saadessamme sinut mukaan!"
+      body_text: "Kiitos, että liityit Truekiin. Olemme innoissamme saadessamme sinut mukaan!"
+      call_to_action: "Vieraile sivustollamme"
+      farewell: "Truek-tiimi"
+  notification_mailer:
+    new_notification_email:
+      view_notification: "Katso Ilmoitus"
+      thanks: "Kiitos, että käytät sovellustamme!"

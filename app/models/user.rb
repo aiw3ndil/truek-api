@@ -16,6 +16,7 @@ class User < ApplicationRecord
   validates :provider, inclusion: { in: %w[email google] }
 
   before_save :downcase_email
+  after_create_commit :send_welcome_email
 
   scope :search_by_name, ->(query) { where('LOWER(name) LIKE ?', "%#{query.downcase}%") }
 
@@ -42,6 +43,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
+  end
 
   def attach_picture_from_url(picture_url)
     return unless picture_url.present?

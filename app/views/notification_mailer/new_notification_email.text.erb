@@ -2,6 +2,6 @@
 
 <%= @notification.message %>
 
-To view the notification, please visit: <%= @notification.link %>
+<%= I18n.t('notification_mailer.new_notification_email.view_notification') %>: <%= @full_link_url %>
 
-Thanks for using our application!
+<%= I18n.t('notification_mailer.new_notification_email.thanks') %>

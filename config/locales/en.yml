@@ -49,3 +49,15 @@ en:
     new_message:
       title: "New message"
       message: "You have received a message from %{sender_name} about your trade."
+  user_mailer:
+    welcome_email:
+      subject: "Welcome to Truek!"
+      greeting: "Hello %{name},"
+      body_html: "Thank you for joining Truek. We're excited to have you!"
+      body_text: "Thank you for joining Truek. We're excited to have you!"
+      call_to_action: "Visit our site"
+      farewell: "The Truek Team"
+  notification_mailer:
+    new_notification_email:
+      view_notification: "View Notification"
+      thanks: "Thanks for using our application!"

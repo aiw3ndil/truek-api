@@ -31,6 +31,11 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
+  config.active_storage.url_options = { 
+    host: ENV['ACTION_MAILER_HOST'], 
+    port: ENV['ACTION_MAILER_PORT'],
+    protocol: ENV['ACTION_MAILER_PROTOCOL'] || 'https'
+  }
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
@@ -84,6 +89,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: ENV["ACTION_MAILER_HOST"] }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

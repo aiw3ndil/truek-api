@@ -20,3 +20,15 @@ es:
     new_message:
       title: "Nuevo mensaje"
       message: "Has recibido un mensaje de %{sender_name} sobre vuestro trueque."
+  user_mailer:
+    welcome_email:
+      subject: "¡Bienvenido a Truek!"
+      greeting: "Hola %{name},"
+      body_html: "¡Gracias por unirte a Truek. Estamos emocionados de tenerte!"
+      body_text: "¡Gracias por unirte a Truek. Estamos emocionados de tenerte!"
+      call_to_action: "Visita nuestro sitio"
+      farewell: "El equipo de Truek"
+  notification_mailer:
+    new_notification_email:
+      view_notification: "Ver Notificación"
+      thanks: "¡Gracias por usar nuestra aplicación!"
