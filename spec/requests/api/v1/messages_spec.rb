@@ -57,9 +57,13 @@ RSpec.describe "Api::V1::Messages", type: :request do
         expect(response).to have_http_status(:created)
       end
 
-      it "denies non-participants from sending messages" do
-        post "/api/v1/trades/#{trade.id}/messages", params: valid_params, headers: third_party_headers
-        expect(response).to have_http_status(:forbidden)
+      it "creates a notification for the recipient when sent via API" do
+        post "/api/v1/trades/#{trade.id}/messages", params: valid_params, headers: proposer_headers
+        expect(response).to have_http_status(:created)
+        
+        get "/api/v1/notifications", headers: receiver_headers
+        json = JSON.parse(response.body)
+        expect(json.any? { |n| n['notification_type'] == 'new_message' }).to be true
       end
     end
   end

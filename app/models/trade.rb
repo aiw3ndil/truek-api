@@ -62,7 +62,7 @@ class Trade < ApplicationRecord
       proposer_item.update(status: 'traded')
       receiver_item.update(status: 'traded')
     elsif status == 'accepted' && status_before_last_save == 'pending'
-      messages.create(user: proposer, content: "Intercambio aceptado. ¡Ya podéis hablar!")
+      messages.create(user: receiver, content: "Intercambio aceptado. ¡Ya podéis hablar!")
     elsif status_before_last_save == 'accepted' && %w[cancelled rejected].include?(status)
       proposer_item.update(status: 'available')
       receiver_item.update(status: 'available')
