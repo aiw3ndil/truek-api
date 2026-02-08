@@ -7,6 +7,8 @@ class Item < ApplicationRecord
   validates :title, presence: true, length: { minimum: 3, maximum: 100 }
   validates :description, length: { maximum: 1000 }
   validates :status, presence: true, inclusion: { in: %w[available traded unavailable] }
+
+  before_validation :set_region_from_user, on: :create
   
   accepts_nested_attributes_for :item_images, allow_destroy: true
   
@@ -21,5 +23,11 @@ class Item < ApplicationRecord
   
   def available?
     status == 'available'
+  end
+
+  private
+
+  def set_region_from_user
+    self.region = user&.region
   end
 end

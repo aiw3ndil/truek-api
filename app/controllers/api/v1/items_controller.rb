@@ -8,6 +8,12 @@ class Api::V1::ItemsController < ApplicationController
   # GET /api/v1/items
   def index
     items = Item.includes(:user, item_images: { file_attachment: :blob }).available.recent
+
+    # Filter by current user's region if a user is logged in
+    if current_user
+      items = items.where(region: current_user.region)
+    end
+    
     items = items.search_by_title(params[:query]) if params[:query].present?
     items = items.by_user(params[:user_id]) if params[:user_id].present?
     

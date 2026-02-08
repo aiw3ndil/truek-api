@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_07_101947) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_08_115218) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -55,6 +55,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_07_101947) do
     t.string "status", default: "available", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "region"
+    t.index ["region"], name: "index_items_on_region"
     t.index ["status"], name: "index_items_on_status"
     t.index ["user_id", "created_at"], name: "index_items_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_items_on_user_id"
@@ -107,8 +109,10 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_07_101947) do
     t.string "google_id"
     t.string "provider", default: "email"
     t.string "language", default: "en"
+    t.string "region"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["google_id"], name: "index_users_on_google_id", unique: true
+    t.index ["region"], name: "index_users_on_region"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -16,14 +16,13 @@ class User < ApplicationRecord
   validates :provider, inclusion: { in: %w[email google] }
 
   before_save :downcase_email
+  before_save :set_region_from_language, if: -> { language_changed? || new_record? }
   after_create_commit :send_welcome_email
 
   scope :search_by_name, ->(query) { where('LOWER(name) LIKE ?', "%#{query.downcase}%") }
 
   def self.from_google(google_data)
     user = find_or_initialize_by(email: google_data[:email].downcase)
-    
-    Rails.logger.debug "User.from_google: google_data[:picture] = #{google_data[:picture]}"
 
     if user.new_record?
       user.assign_attributes(
@@ -54,14 +53,22 @@ class User < ApplicationRecord
   def attach_picture_from_url(picture_url)
     return unless picture_url.present?
     
-    # Temporarily removed rescue for debugging
-    require 'open-uri'
-    file = URI.open(picture_url)
-    filename = File.basename(URI.parse(picture_url).path).presence || "picture.jpg"
-    picture.attach(io: file, filename: filename)
+    begin
+      require 'open-uri'
+      file = URI.open(picture_url)
+      filename = File.basename(URI.parse(picture_url).path).presence || "picture.jpg"
+      picture.attach(io: file, filename: filename)
+    rescue => e
+      Rails.logger.error("Failed to attach picture for user #{id}: #{e.message}")
+    end
   end
 
   private
+
+  def set_region_from_language
+    # Simple mapping from language to region. This can be expanded later.
+    self.region = self.language
+  end
 
   def send_welcome_email
     UserMailer.welcome_email(self).deliver_later
