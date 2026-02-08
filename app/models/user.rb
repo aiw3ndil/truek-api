@@ -23,6 +23,8 @@ class User < ApplicationRecord
   def self.from_google(google_data)
     user = find_or_initialize_by(email: google_data[:email].downcase)
     
+    Rails.logger.debug "User.from_google: google_data[:picture] = #{google_data[:picture]}"
+
     if user.new_record?
       user.assign_attributes(
         google_id: google_data[:sub],
@@ -52,14 +54,11 @@ class User < ApplicationRecord
   def attach_picture_from_url(picture_url)
     return unless picture_url.present?
     
-    begin
-      require 'open-uri'
-      file = URI.open(picture_url)
-      filename = File.basename(URI.parse(picture_url).path).presence || "picture.jpg"
-      picture.attach(io: file, filename: filename)
-    rescue => e
-      Rails.logger.error("Failed to attach picture for user #{id}: #{e.message}")
-    end
+    # Temporarily removed rescue for debugging
+    require 'open-uri'
+    file = URI.open(picture_url)
+    filename = File.basename(URI.parse(picture_url).path).presence || "picture.jpg"
+    picture.attach(io: file, filename: filename)
   end
 
   private

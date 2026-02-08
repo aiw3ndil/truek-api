@@ -1,5 +1,5 @@
 <h1><%= I18n.t('user_mailer.welcome_email.greeting', name: @user.name) %></h1>
 <p><%= I18n.t('user_mailer.welcome_email.body_html') %></p>
-<p><%= link_to I18n.t('user_mailer.welcome_email.call_to_action'), root_url, class: 'button' %></p>
+<p><%= link_to I18n.t('user_mailer.welcome_email.call_to_action'), url_for(root_path), class: 'button' %></p>
 <p><%= I18n.t('user_mailer.welcome_email.farewell') %></p>
 
