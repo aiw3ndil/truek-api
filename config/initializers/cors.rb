@@ -23,12 +23,13 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   if Rails.env.development? || Rails.env.test?
     allow do
       origins 'http://localhost:3000',
-              'http://192.168.0.102:3000'
-
+              'http://localhost:3001', # Added to allow frontend requests when backend is on 3001
+              'http://192.168.0.102:3000' # Assuming this is a local network IP for dev/test
       resource '*',
         headers: :any,
         methods: [:get, :post, :put, :patch, :delete, :options, :head],
-        expose: ['Authorization']
+        expose: ['Authorization'],
+        credentials: true
     end
   end
 end

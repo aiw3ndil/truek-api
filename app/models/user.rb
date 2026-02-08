@@ -42,12 +42,13 @@ class User < ApplicationRecord
     user
   end
 
-  private
-
-  def send_welcome_email
-    UserMailer.welcome_email(self).deliver_later
+  def password_confirmation_match
+    if password.present? && password != password_confirmation
+      errors.add(:password_confirmation, "doesn't match Password")
+    end
   end
 
+  # Now public to be called from the class method `from_google`
   def attach_picture_from_url(picture_url)
     return unless picture_url.present?
     
@@ -59,6 +60,12 @@ class User < ApplicationRecord
     rescue => e
       Rails.logger.error("Failed to attach picture for user #{id}: #{e.message}")
     end
+  end
+
+  private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
   end
 
   def downcase_email

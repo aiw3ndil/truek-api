@@ -1,6 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
   default from: "from@example.com"
   layout "mailer"
+  include Rails.application.routes.url_helpers
 
   # Ensure all mailer generated URLs are absolute
   if Rails.env.development?
