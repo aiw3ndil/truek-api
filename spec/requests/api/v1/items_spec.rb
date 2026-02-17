@@ -32,6 +32,19 @@ RSpec.describe "Api::V1::Items", type: :request do
       expect(json_response.length).to eq(1)
       expect(json_response.first['title']).to eq("Special Item")
     end
+
+    it "filters items by region" do
+      # We don't use the let! items here to have a clean slate
+      item_us = create(:item, region: 'US', user: user)
+      create(:item, region: 'EU', user: other_user)
+
+      get "/api/v1/items", params: { region: 'US' }
+      expect(response).to have_http_status(:ok)
+      json_response = JSON.parse(response.body)
+
+      expect(json_response.length).to eq(1)
+      expect(json_response.first['id']).to eq(item_us.id)
+    end
   end
 
   describe "GET /api/v1/items/:id" do
