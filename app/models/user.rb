@@ -18,6 +18,7 @@ class User < ApplicationRecord
   before_save :downcase_email
   before_save :set_region_from_language, if: -> { language_changed? || new_record? }
   after_create_commit :send_welcome_email
+  after_create_commit :create_welcome_notification
 
   scope :search_by_name, ->(query) { where('LOWER(name) LIKE ?', "%#{query.downcase}%") }
 
@@ -72,6 +73,18 @@ class User < ApplicationRecord
 
   def send_welcome_email
     UserMailer.welcome_email(self).deliver_later
+  end
+
+  def create_welcome_notification
+    I18n.with_locale(language) do
+      Notification.create(
+        user: self,
+        title: I18n.t('notifications.welcome.title'),
+        message: I18n.t('notifications.welcome.message', user_name: name),
+        link: "/profile",
+        notification_type: "welcome"
+      )
+    end
   end
 
   def downcase_email

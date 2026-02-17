@@ -20,6 +20,9 @@ es:
     new_message:
       title: "Nuevo mensaje"
       message: "Has recibido un mensaje de %{sender_name} sobre vuestro trueque."
+    welcome:
+      title: "¡Bienvenido/a a Truek!"
+      message: "¡Hola, %{user_name}! Te damos la bienvenida a bordo. Siéntete libre de empezar a explorar artículos o publicar los tuyos."
   user_mailer:
     welcome_email:
       subject: "¡Bienvenido a Truek!"

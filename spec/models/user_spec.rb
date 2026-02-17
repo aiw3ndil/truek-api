@@ -33,6 +33,14 @@ RSpec.describe User, type: :model do
       user = create(:user, email: 'USER@EXAMPLE.COM')
       expect(user.reload.email).to eq('user@example.com')
     end
+
+    it 'creates a welcome notification after a new user is created' do
+      user = build(:user)
+      expect { user.save }.to change(Notification, :count).by(1)
+      notification = Notification.last
+      expect(notification.user).to eq(user)
+      expect(notification.notification_type).to eq('welcome')
+    end
   end
 
   describe 'password authentication' do

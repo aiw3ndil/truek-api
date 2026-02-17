@@ -11,6 +11,9 @@ class Notification < ApplicationRecord
   private
 
   def send_email
-    NotificationMailer.with(notification: self).new_notification_email.deliver_later
+    email_notification_types = %w[trade_requested trade_accepted new_message trade_cancelled]
+    if email_notification_types.include?(notification_type)
+      NotificationMailer.with(notification: self).new_notification_email.deliver_later
+    end
   end
 end

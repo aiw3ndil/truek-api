@@ -49,6 +49,9 @@ en:
     new_message:
       title: "New message"
       message: "You have received a message from %{sender_name} about your trade."
+    welcome:
+      title: "Welcome to Truek!"
+      message: "Hi %{user_name}, welcome aboard! We're excited to have you. Feel free to start browsing items or list your own."
   user_mailer:
     welcome_email:
       subject: "Welcome to Truek!"
