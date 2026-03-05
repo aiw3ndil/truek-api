@@ -67,6 +67,6 @@ deployment:
 #   - rails db:migrate
 
 # Volumes (if needed)
-# volumes:
-#   - ./log:/rails/log
-#   - ./storage:/rails/storage
+volumes:
+  - ./log:/app/log
+  - ./storage:/app/storage

@@ -5,7 +5,7 @@ ARG RUBY_VERSION=3.3.7
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 # Rails app lives here
-WORKDIR /rails
+WORKDIR /app
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -38,22 +38,28 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Final stage for app image
 FROM base
 
-# Install packages needed for deployment (PostgreSQL client + libyaml)
+# Install packages needed for deployment (PostgreSQL client + libyaml + image libraries)
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libpq5 libyaml-0-2 && \
+    apt-get install --no-install-recommends -y curl libpq5 libyaml-0-2 libvips imagemagick && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
+COPY --from=build /app /app
 
-# Run and own only the runtime files as a non-root user for security
+# Create user
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails log storage tmp
+    usermod -u 1000 rails
+
+# Create dirs and assign permissions
+RUN mkdir -p /app/db /app/log /app/storage /app/tmp && \
+    chown -R rails:rails /app && \
+    chmod -R 775 /app/storage
+
 USER rails:rails
 
 # Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
