@@ -97,6 +97,50 @@ Autentica un usuario existente y devuelve un token JWT.
 }
 ```
 
+### Recuperación de Contraseña
+
+**POST** `/api/v1/password_resets`
+
+Solicita el restablecimiento de la contraseña enviando un email con un token.
+
+**Request Body:**
+```json
+{
+  "email": "john@example.com"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "message": "Password reset instructions sent to your email"
+}
+```
+
+**PUT/PATCH** `/api/v1/password_resets/:token`
+
+Restablece la contraseña usando el token recibido por email.
+
+**Request Body:**
+```json
+{
+  "password": "newpassword123",
+  "password_confirmation": "newpassword123"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "message": "Password has been reset successfully"
+}
+```
+
+**Errores:**
+- `404 Not Found`: Token inválido
+- `410 Gone`: Token expirado (expira en 2 horas)
+- `422 Unprocessable Entity`: Errores de validación (ej. contraseña muy corta)
+
 ## Endpoints de Usuario (Requieren Autenticación)
 
 Para todos estos endpoints, debes incluir el token JWT en el header:

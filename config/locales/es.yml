@@ -31,6 +31,13 @@ es:
       body_text: "¡Gracias por unirte a Truek. Estamos emocionados de tenerte!"
       call_to_action: "Visita nuestro sitio"
       farewell: "El equipo de Truek"
+    password_reset_email:
+      subject: "Restablecer contraseña de Truek"
+      greeting: "Hola %{name},"
+      body_html: "Has solicitado restablecer tu contraseña de Truek. Si no has sido tú, puedes ignorar este correo."
+      body_text: "Has solicitado restablecer tu contraseña de Truek. Si no has sido tú, puedes ignorar este correo."
+      call_to_action: "Restablecer mi contraseña"
+      farewell: "El equipo de Truek"
   notification_mailer:
     new_notification_email:
       view_notification: "Ver Notificación"

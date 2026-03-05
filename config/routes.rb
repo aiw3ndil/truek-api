@@ -15,6 +15,8 @@ Rails.application.routes.draw do
       post 'auth/login', to: 'authentication#login'
       post 'auth/google', to: 'google_auth#authenticate'
       
+      resources :password_resets, only: [:create, :update]
+      
       # User routes
       resources :users, only: [:index]
       get 'users/me', to: 'users#me'

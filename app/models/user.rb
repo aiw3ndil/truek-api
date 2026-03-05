@@ -44,10 +44,18 @@ class User < ApplicationRecord
     user
   end
 
-  def password_confirmation_match
-    if password.present? && password != password_confirmation
-      errors.add(:password_confirmation, "doesn't match Password")
-    end
+  def generate_password_reset_token!
+    self.reset_password_token = SecureRandom.urlsafe_base64
+    self.reset_password_sent_at = Time.current
+    save!(validate: false)
+  end
+
+  def password_reset_expired?
+    reset_password_sent_at < 2.hours.ago
+  end
+
+  def clear_password_reset_token!
+    update_columns(reset_password_token: nil, reset_password_sent_at: nil)
   end
 
   # Now public to be called from the class method `from_google`

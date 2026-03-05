@@ -28,6 +28,13 @@ fi:
       body_text: "Kiitos, että liityit Truekiin. Olemme innoissamme saadessamme sinut mukaan!"
       call_to_action: "Vieraile sivustollamme"
       farewell: "Truek-tiimi"
+    password_reset_email:
+      subject: "Palauta Truek-salasanasi"
+      greeting: "Hei %{name},"
+      body_html: "Olet pyytänyt palauttamaan Truek-salasanasi. Jos et ole tehnyt tätä pyyntöä, voit jättää tämän sähköpostin huomiotta."
+      body_text: "Olet pyytänyt palauttamaan Truek-salasanasi. Jos et ole tehnyt tätä pyyntöä, voit jättää tämän sähköpostin huomiotta."
+      call_to_action: "Palauta salasanani"
+      farewell: "Truek-tiimi"
   notification_mailer:
     new_notification_email:
       view_notification: "Katso Ilmoitus"
