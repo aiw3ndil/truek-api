@@ -172,6 +172,30 @@ export function useAuth() {
     setUser(null);
   };
 
+  const changePassword = async (currentPassword, newPassword, newPasswordConfirmation) => {
+    try {
+      const response = await fetch(`${API_URL}/api/v1/users/me/change_password`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          current_password: currentPassword,
+          password: newPassword,
+          password_confirmation: newPasswordConfirmation
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return { success: true, message: data.message };
+      } else {
+        return { success: false, error: data.error, errors: data.errors };
+      }
+    } catch (error) {
+      return { success: false, error: 'Error de conexión' };
+    }
+  };
+
   const getAuthHeaders = () => {
     const token = localStorage.getItem('authToken');
     return {

@@ -183,8 +183,7 @@ Actualiza la información del usuario autenticado.
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
-  "password": "newpassword123",
-  "password_confirmation": "newpassword123"
+  "picture": "binary_data_for_multipart_form"
 }
 ```
 
@@ -206,6 +205,32 @@ Actualiza la información del usuario autenticado.
   ]
 }
 ```
+
+### Cambiar Contraseña
+
+**POST** `/api/v1/users/me/change_password`
+
+Permite al usuario autenticado cambiar su contraseña actual.
+
+**Request Body:**
+```json
+{
+  "current_password": "old_password123",
+  "password": "newpassword123",
+  "password_confirmation": "newpassword123"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "message": "Password updated successfully"
+}
+```
+
+**Errores:**
+- `401 Unauthorized`: Contraseña actual incorrecta
+- `422 Unprocessable Entity`: Errores de validación (ej. nueva contraseña muy corta)
 
 ## Modelo User
 

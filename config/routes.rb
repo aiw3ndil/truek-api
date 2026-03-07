@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index]
       get 'users/me', to: 'users#me'
       put 'users/me', to: 'users#update'
+      post 'users/me/change_password', to: 'users#change_password'
       
       # Items routes
       resources :items, only: [:index, :show, :create, :update, :destroy]
