@@ -69,6 +69,8 @@ Rails.application.configure do
     port: ENV["ACTION_MAILER_PORT"]
   }
 
+  config.x.frontend_url = ENV.fetch("FRONTEND_URL", "https://truek.xyz")
+
   config.active_storage.service = :local
   config.active_storage.url_options = { 
     host: ENV['ACTION_MAILER_HOST'], 
