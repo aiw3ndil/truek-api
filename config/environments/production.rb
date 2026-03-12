@@ -38,11 +38,18 @@ Rails.application.configure do
   #}
 
   # Action Mailer settings
+  config.action_mailer.delivery_method = :enkimail
+  config.action_mailer.enkimail_settings = {
+    api_key: ENV['ENKIMAIL_API_KEY']
+  }
+
+  # Optional: Configure a global 'from' address
+  # This address MUST be a verified sender in your Enkimail dashboard.
+  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
   config.action_mailer.asset_host = "https://www.truek.xyz"
-  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
 
   # # SMTP Configuration
   # config.action_mailer.delivery_method = :smtp
@@ -61,8 +68,6 @@ Rails.application.configure do
     protocol: ENV["ACTION_MAILER_PROTOCOL"] || 'https', 
     port: ENV["ACTION_MAILER_PORT"]
   }
-
-  #config.x.frontend_url = ENV.fetch("FRONTEND_URL", "https://truek.xyz")
 
   config.active_storage.service = :local
   config.active_storage.url_options = { 
