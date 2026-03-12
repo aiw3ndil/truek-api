@@ -56,6 +56,19 @@ Rails.application.configure do
   #   enable_starttls_auto: true
   # }
 
+  config.action_mailer.default_url_options = { 
+    host: ENV["ACTION_MAILER_HOST"] || 'truek.xyz', 
+    protocol: ENV["ACTION_MAILER_PROTOCOL"] || 'https', 
+    port: ENV["ACTION_MAILER_PORT"]
+  }
+
+
+  config.action_mailer.default_url_options = { 
+    host: ENV["ACTION_MAILER_HOST"] || 'truek.xyz', 
+    protocol: ENV["ACTION_MAILER_PROTOCOL"] || 'https', 
+    port: ENV["ACTION_MAILER_PORT"]
+  }
+
   #config.x.frontend_url = ENV.fetch("FRONTEND_URL", "https://truek.xyz")
 
   config.active_storage.service = :local
