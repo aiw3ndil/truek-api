@@ -37,18 +37,32 @@ Rails.application.configure do
   #  port: ENV['ACTION_MAILER_PORT'],
   #}
 
-  config.action_mailer.delivery_method = :enkimail
-  config.action_mailer.enkimail_settings = {
-    api_key: ENV['ENKIMAIL_API_KEY']
+  # Action Mailer settings
+  config.action_mailer.perform_caching = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.asset_host = "https://www.truek.xyz"
+  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
+
+  # SMTP Configuration
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              ENV["SMTP_HOST"],
+    port:                 ENV["SMTP_PORT"] || 587,
+    domain:               ENV["SMTP_DOMAIN"],
+    user_name:            ENV["SMTP_USERNAME"],
+    password:             ENV["SMTP_PASSWORD"],
+    authentication:       :plain,
+    enable_starttls_auto: true
   }
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.asset_host = 'http://www.truek.xyz' # Adjust based on your dev server port
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: 'www.truek.xyz', protocol: 'http' }
-  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
+  config.action_mailer.default_url_options = { 
+    host: ENV["ACTION_MAILER_HOST"] || 'truek.xyz', 
+    protocol: ENV["ACTION_MAILER_PROTOCOL"] || 'https', 
+    port: ENV["ACTION_MAILER_PORT"]
+  }
+
+  config.x.frontend_url = ENV.fetch("FRONTEND_URL", "https://truek.xyz")
 
   config.active_storage.service = :local
   config.active_storage.url_options = { 
@@ -86,27 +100,6 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :async # Explicitly set for production, though a robust adapter is recommended
 
-  config.action_mailer.perform_caching = false
-
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
-  
-  config.action_mailer.delivery_method = :smtp
-
-  config.action_mailer.smtp_settings = {
-    address:              ENV["SMTP_HOST"],
-    port:                 ENV["SMTP_PORT"] || 587,
-    domain:               ENV["SMTP_DOMAIN"],
-    user_name:            ENV["SMTP_USERNAME"],
-    password:             ENV["SMTP_PASSWORD"],
-    authentication:       :plain,
-    enable_starttls_auto: true
-  }
-
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: ENV["ACTION_MAILER_HOST"], protocol: ENV["ACTION_MAILER_PROTOCOL"] || 'https', port: ENV["ACTION_MAILER_PORT"] }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
