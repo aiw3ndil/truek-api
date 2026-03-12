@@ -44,25 +44,19 @@ Rails.application.configure do
   config.action_mailer.asset_host = "https://www.truek.xyz"
   config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
 
-  # SMTP Configuration
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address:              ENV["SMTP_HOST"],
-    port:                 ENV["SMTP_PORT"] || 587,
-    domain:               ENV["SMTP_DOMAIN"],
-    user_name:            ENV["SMTP_USERNAME"],
-    password:             ENV["SMTP_PASSWORD"],
-    authentication:       :plain,
-    enable_starttls_auto: true
-  }
+  # # SMTP Configuration
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address:              ENV["SMTP_HOST"],
+  #   port:                 ENV["SMTP_PORT"] || 587,
+  #   domain:               ENV["SMTP_DOMAIN"],
+  #   user_name:            ENV["SMTP_USERNAME"],
+  #   password:             ENV["SMTP_PASSWORD"],
+  #   authentication:       :plain,
+  #   enable_starttls_auto: true
+  # }
 
-  config.action_mailer.default_url_options = { 
-    host: ENV["ACTION_MAILER_HOST"] || 'truek.xyz', 
-    protocol: ENV["ACTION_MAILER_PROTOCOL"] || 'https', 
-    port: ENV["ACTION_MAILER_PORT"]
-  }
-
-  config.x.frontend_url = ENV.fetch("FRONTEND_URL", "https://truek.xyz")
+  #config.x.frontend_url = ENV.fetch("FRONTEND_URL", "https://truek.xyz")
 
   config.active_storage.service = :local
   config.active_storage.url_options = { 
