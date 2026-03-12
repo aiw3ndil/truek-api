@@ -30,10 +30,29 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
+  #config.active_storage.service = :local
+  #config.active_storage.url_options = { 
+  #  host: ENV['ACTION_MAILER_HOST'], 
+  #  protocol: ENV['ACTION_MAILER_PROTOCOL'] || 'https'
+  #  port: ENV['ACTION_MAILER_PORT'],
+  #}
+
+  config.action_mailer.delivery_method = :enkimail
+  config.action_mailer.enkimail_settings = {
+    api_key: ENV['ENKIMAIL_API_KEY']
+  }
+
+  # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.asset_host = 'http://www.truek.xyz' # Adjust based on your dev server port
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { host: 'www.truek.xyz', protocol: 'http' }
+  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
+
   config.active_storage.service = :local
   config.active_storage.url_options = { 
     host: ENV['ACTION_MAILER_HOST'], 
-    port: ENV['ACTION_MAILER_PORT'],
     protocol: ENV['ACTION_MAILER_PROTOCOL'] || 'https'
   }
 

@@ -32,6 +32,9 @@ gem "jwt"
 # Google OAuth authentication
 gem "google-id-token"
 
+# Enkimail for email templates and sending
+gem "enkimail"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
