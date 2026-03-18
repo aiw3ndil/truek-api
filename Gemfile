@@ -65,4 +65,3 @@ group :development do
   # gem "spring"
   gem "letter_opener"
 end
-

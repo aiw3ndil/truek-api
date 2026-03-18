@@ -60,6 +60,14 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
+  config.action_mailer.delivery_method = :enkimail
+  config.action_mailer.enkimail_settings = {
+    api_key: ENV['ENKIMAIL_API_KEY']
+  }
+
+    # Optional: Configure a global 'from' address
+    # This address MUST be a verified sender in your Enkimail dashboard.
+  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

@@ -28,5 +28,14 @@ module TruekApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Enkimail configuration
+    config.action_mailer.delivery_method = :enkimail
+    config.action_mailer.enkimail_settings = {
+      api_key: ENV['ENKIMAIL_API_KEY']
+    }
+
+    # Global 'from' address (must be verified in Enkimail dashboard)
+    config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
   end
 end

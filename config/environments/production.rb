@@ -38,14 +38,6 @@ Rails.application.configure do
   #}
 
   # Action Mailer settings
-  config.action_mailer.delivery_method = :enkimail
-  config.action_mailer.enkimail_settings = {
-    api_key: ENV['ENKIMAIL_API_KEY']
-  }
-
-  # Optional: Configure a global 'from' address
-  # This address MUST be a verified sender in your Enkimail dashboard.
-  config.action_mailer.default_options = { from: 'no-reply@truek.xyz' }
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
