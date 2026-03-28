@@ -61,6 +61,6 @@ USER rails:rails
 # Entrypoint prepares the database.
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
-# Start the server by default, this can be overwritten at runtime
+# Start the server and ensure migrations run
 EXPOSE 3000
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["/bin/bash", "-c", "./bin/rails db:prepare && ./bin/rails server -b 0.0.0.0"]
