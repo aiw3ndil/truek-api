@@ -1,9 +1,9 @@
 #!/bin/bash -e
 
 # If running the rails server then create or migrate existing database
-if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+if [[ "$*" == *"rails server"* ]] || [[ "$*" == *"rails s"* ]] || [[ "$*" == *"bin/rails server"* ]]; then
   echo "Preparing database..."
-  ./bin/rails db:prepare || echo "Database preparation complete or not needed"
+  ./bin/rails db:prepare || echo "Database preparation completed or not needed"
 fi
 
 exec "${@}"
