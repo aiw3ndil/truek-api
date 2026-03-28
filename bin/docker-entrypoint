@@ -1,9 +1,14 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [[ "$*" == *"rails server"* ]] || [[ "$*" == *"rails s"* ]] || [[ "$*" == *"bin/rails server"* ]]; then
-  echo "Preparing database..."
-  ./bin/rails db:prepare || echo "Database preparation completed or not needed"
+echo "--- Entrando en docker-entrypoint ---"
+
+# Ejecutar migraciones siempre para asegurar que la base de datos está lista
+echo "Ejecutando rails db:prepare..."
+if ./bin/rails db:prepare; then
+  echo "✓ Base de datos preparada correctamente."
+else
+  echo "⚠ Advertencia: Falló db:prepare, pero intentando continuar..."
 fi
 
+echo "--- Iniciando comando: $@ ---"
 exec "${@}"
