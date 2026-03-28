@@ -1,14 +1,13 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 
-echo "--- Entrando en docker-entrypoint ---"
+echo "--- Iniciando docker-entrypoint ---"
 
-# Ejecutar migraciones siempre para asegurar que la base de datos está lista
-echo "Ejecutando rails db:prepare..."
-if ./bin/rails db:prepare; then
-  echo "✓ Base de datos preparada correctamente."
-else
-  echo "⚠ Advertencia: Falló db:prepare, pero intentando continuar..."
-fi
+# Limpieza opcional de tmp (recomendado para Rails en Docker)
+rm -f tmp/pids/server.pid
 
-echo "--- Iniciando comando: $@ ---"
-exec "${@}"
+echo "--- Ejecutando rails db:prepare ---"
+./bin/rails db:prepare || echo "⚠ Falló db:prepare, pero intentando arrancar..."
+
+echo "--- Comando final: $@ ---"
+exec "$@"
